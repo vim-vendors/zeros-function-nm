@@ -77,16 +77,16 @@ def Secant(_func, a, b, nmax):
 		temp = fa
 		fa = fb 
 		fb = temp
-	print("0, a: %20.18f, fa: %20.18f" % (a, fa))
-	print("1, b: %20.18f, fb: %20.18f" % (b, fb))
+	print("0, a: %30.28f, fa: %30.28f" % (a, fa))
+	print("1, b: %30.28f, fb: %30.28f" % (b, fb))
 	for n in range(1, nmax):
 		if (abs(fa) > abs(fb)):
 			temp = a
 			a = b 
 			b = temp
-			temp = fa
+			temp2 = fa
 			fa = fb 
-			fb = temp
+			fb = temp2
 		d = (b - a) / (fb - fa)
 		b = a
 		fb = fa 
@@ -96,14 +96,14 @@ def Secant(_func, a, b, nmax):
 			return a
 		a = a - d
 		fa = _func(a)
-		print("n: %d, a: %20.18f, fa: %20.18f" % (n, a, fa))
+		print("n: %d, a: %30.28f, fa: %30.28f" % (n, a, fa))
 	print ("Max iterations reached without convergence using Secant method...\n")
 	return a
 #end Secant
 
+print("Answer is %5.2f" % (Bisection(test2,0.5,2,54)))
+print("Answer is %5.2f" % (Newton(test, test_prime,0.5,54)))
+print("Answer is %5.2f" % (Secant(test2,0.5,2,54)))
 
-Bisection(test2,0.5,2,54)
-Newton(test, test_prime,0.5,54)
-Secant(test2,0.5,2,54)
 
 
