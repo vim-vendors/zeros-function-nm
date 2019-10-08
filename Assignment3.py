@@ -1,15 +1,16 @@
 import sys
 import math
 import re	
+import pdb
 
 boolean_check = [True, False, False]
 maxIt = 10000
 epsilon = 10**(-7)  
 delta = 10**(-14) 
 
-#get command line arguments
+#get filename from CLI arguments
 data_file = str(sys.argv[len(sys.argv)-1])
-print(data_file)
+
 
 # Parse command line arguments
 for x in range(len(sys.argv) - 1):
@@ -35,14 +36,46 @@ for x in range(len(sys.argv) - 1):
 #If Newton method is provided two floats output message telling
 #user that input 2 will be discarded for Newton	
 floats = []
-for x in range(len(sys.argv)-2, 0, -1):
-	if isinstance(float(str(sys.argv[x])), float):
-		# print("index : %d, arg: %5.2f" % (x, float(str(sys.argv[x]))))
-		floats.insert(0, float(str(sys.argv[x])))
+for x in range(len(sys.argv)-2, len(sys.argv)-4, -1):
+	try:
+		if isinstance(float(str(sys.argv[x])), float):
+			# print("index : %d, arg: %5.2f" % (x, float(str(sys.argv[x]))))
+			floats.insert(0, float(str(sys.argv[x])))
+	except ValueError:
+		print("Wrong arguments passed. End program.")
+		break
 
-# TASK open file and extract data
+
+# open file and extract data
 	#make sure to pack data in lists with n in list[0] 
 	#and b in list[n-1] for derivative function
+
+#extract file info and parse with regex
+helloFile = open(data_file)
+helloContent = helloFile.read()
+p = re.compile('\n')
+n = len(p.findall(helloContent)) - 1
+p = re.compile('-?[0-9]+')
+string_array = p.findall(helloContent)
+polyList = []
+for x in range(len(string_array)):
+	polyList.append(int(string_array[x]))
+
+pdb.set_trace()
+
+# TASK convert file data list into function
+#	via polyConvert function
+def polyConvert(polynomial, x_value):
+	size = polynomial[0]
+	sum = 0
+	# LEFT OFF HERE
+	# NEED TO WRITE A METHOD THAT CALCULATES A 
+	# VALUE OF THE POLYNOMIAL AND RETURNS A 
+	# VALUE IE A FUNCTION
+	# for x in range(1, len(polynomial)):
+	# 	sum +=  
+	return sum
+
 
 # TASK choose operations based on options
 
@@ -103,8 +136,8 @@ def derivative(_list):
 		_list[x] *= old_index
 		old_index -= 1
 	return _list
-# TASK convert file data list into function
-#	via polyConvert function
+
+
 
 # TASK write hybrid Bisection-Newton method
 
@@ -143,14 +176,14 @@ def Secant(_func, a, b, nmax):
 #end Secant
 
 #write solutions/output to file
-outputSol = data_file
-extract = re.search('(.+?).pol', outputSol)
-if extract:
-    outputSol = str(extract.group(1)) + ".sol"
-solution = " I am the test solution!"
-outputFile = open(outputSol, 'w')
-outputFile.write(solution)
-outputFile.close()
+# outputSol = data_file
+# extract = re.search('(.+?).pol', outputSol)
+# if extract:
+#     outputSol = str(extract.group(1)) + ".sol"
+# solution = " I am the test solution!"
+# outputFile = open(outputSol, 'w')
+# outputFile.write(solution)
+# outputFile.close()
 # helloFile .close()
 
 
