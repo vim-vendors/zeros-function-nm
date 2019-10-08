@@ -1,21 +1,52 @@
 import sys
 import math
+import re	
 
-epsilon = sys.float_info.epsilon #10**(-7) #= 10^(-7) %7 digit accuracy is desired 
-delta = 10**(-14) # Don't want to divide by a number smaller than this
+boolean_check = [True, False, False]
+maxIt = 10000
+epsilon = 10**(-7)  
+delta = 10**(-14) 
 
-def test(arg):
-	return ((arg**3)*1.0) + (3.0*arg) - (1*1.0)
+#get command line arguments
+data_file = str(sys.argv[len(sys.argv)-1])
+print(data_file)
 
-def test_prime(arg):
-	return (3*(arg**2)*1.0) + (3.0) 
+# Parse command line arguments
+for x in range(len(sys.argv) - 1):
+	# Choose method
+	if (str(sys.argv[x]) == "--newt"):
+		boolean_check[0] = False
+		boolean_check[1] = True
+		boolean_check[2] = False
+	elif (str(sys.argv[x]) == "--sec"):
+		boolean_check[0] = False
+		boolean_check[1] = False
+		boolean_check[2] = True
+	#if maxIt default is changed
+	elif (str(sys.argv[x]) == "--maxIt"):
+		try:
+			maxIt = int(sys.argv[x + 1]) + 0
+			# print("Max power achieved %r" % (maxIt))
+		except ValueError:
+			print("Wrong arguments passed. End program.")
+			break
 
-def test2(arg):
-	return ((arg**3)*1.0) - (2.0*math.sin(arg))
+# TASK If Bisection or Secant are picked floats must be length of 2
+#If Newton method is provided two floats output message telling
+#user that input 2 will be discarded for Newton	
+floats = []
+for x in range(len(sys.argv)-2, 0, -1):
+	if isinstance(float(str(sys.argv[x])), float):
+		# print("index : %d, arg: %5.2f" % (x, float(str(sys.argv[x]))))
+		floats.insert(0, float(str(sys.argv[x])))
 
-def test3(arg):
-	return (1.0*arg) + 10 - ((1.0*arg) * math.cos(50/(1.0*arg)))
+# TASK open file and extract data
+	#make sure to pack data in lists with n in list[0] 
+	#and b in list[n-1] for derivative function
 
+# TASK choose operations based on options
+
+#Algorithms
 def Bisection(_function,a,b, nmax):
 	fa = _function(a)
 	fb = _function(b)
@@ -47,9 +78,6 @@ def Bisection(_function,a,b, nmax):
 def sign(x, y):
 	return x * y > 0
 
-
-
-
 def Newton(_func, deriv_func, x, nmax):
 	fx = _func(x)
 	print("0, x: %20.18f, fx: %20.18f" % (x, fx))
@@ -66,6 +94,19 @@ def Newton(_func, deriv_func, x, nmax):
 			print("Newton algorithm has converged after %d iterations!" % (n))
 			return x
 #end Newton
+
+#calculate polynomial derivates for newton based on file values
+def derivative(_list):
+	old_index = _list[0]
+	_list[0] -= 1
+	for x in range(1, len(_list)):
+		_list[x] *= old_index
+		old_index -= 1
+	return _list
+# TASK convert file data list into function
+#	via polyConvert function
+
+# TASK write hybrid Bisection-Newton method
 
 def Secant(_func, a, b, nmax):
 	fa = _func(a)
@@ -101,9 +142,52 @@ def Secant(_func, a, b, nmax):
 	return a
 #end Secant
 
-print("Answer is %5.2f" % (Bisection(test2,0.5,2,54)))
-print("Answer is %5.2f" % (Newton(test, test_prime,0.5,54)))
-print("Answer is %5.2f" % (Secant(test2,0.5,2,54)))
+#write solutions/output to file
+outputSol = data_file
+extract = re.search('(.+?).pol', outputSol)
+if extract:
+    outputSol = str(extract.group(1)) + ".sol"
+solution = " I am the test solution!"
+outputFile = open(outputSol, 'w')
+outputFile.write(solution)
+outputFile.close()
+# helloFile .close()
 
 
+# Test code 
+#--------------------------------
 
+# print("Answer is %5.2f" % (Bisection(test2,0.5,2,54)))
+# print("Answer is %5.2f" % (Newton(test, test_prime,0.5,54)))
+# print("Answer is %5.2f" % (Secant(test2,0.5,2,54)))
+
+# print the current default algorithm
+# Bisection set to default in boolean_check
+def print_method():
+	methods = ["Bisection", "Newton", "Secant"]
+	for x in range(len(methods)):
+		if (boolean_check[x]):
+			print(methods[x])
+
+#test functions
+# def test(arg):
+# 	return ((arg**3)*1.0) + (3.0*arg) - (1*1.0)
+
+# def test_prime(arg):
+# 	return (3*(arg**2)*1.0) + (3.0) 
+
+# def test2(arg):
+# 	return ((arg**3)*1.0) - (2.0*math.sin(arg))
+
+# def test3(arg):
+# 	return (1.0*arg) + 10 - ((1.0*arg) * math.cos(50/(1.0*arg)))
+
+# for x in range(len(floats)):
+# 	print("Float Index : %d, Float Value: %5.2f" % (x, floats[x]))
+#
+# print("The current default method is :", end =" ")
+# print_method()
+#
+#	# print("sys.argv[%d] : %r " % (x, sys.argv[x]))
+
+#
