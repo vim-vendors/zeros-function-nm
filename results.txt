@@ -1,0 +1,108 @@
+results
+----------
+
+file1
+-------
+ $ python3 Assignment3.py  0.0 1.0 file1.pola : 0.000000000000000000, b : 1.000000000000000000, fa : -1.000000000000000000, fb : -1.000000000000000000
+Inadequate values for a and b.
+
+End program.....
+ 
+ $ python3 Assignment3.py  -sec 0.0 1.0 file1.pol
+0, a: 0.0000000000000000000000000000, fa: -1.0000000000000000000000000000
+1, b: 1.0000000000000000000000000000, fb: -1.0000000000000000000000000000
+Traceback (most recent call last):
+  File "Assignment3.py", line 286, in <module>
+    output_tofile(str(Secant(polyList,floats[0],floats[1], maxIt)))
+  File "Assignment3.py", line 245, in Secant
+    d = (b - a) / (fb - fa)
+ZeroDivisionError: float division by zero
+
+ $ python3 Assignment3.py -newt 0.0 1.0 file1.pol
+0, x: 0.000000000000000000, fx: -1.000000000000000000
+Traceback (most recent call last):
+  File "Assignment3.py", line 290, in <module>
+    output_tofile(str(Newton(polyList,floats[0], maxIt)))
+  File "Assignment3.py", line 157, in Newton
+    fp = polyConvert(derivative(_list_fp), x)
+  File "Assignment3.py", line 94, in polyConvert
+    polynomial[x] *= x_value**(size) 
+ZeroDivisionError: 0.0 cannot be raised to a negative power
+
+ $ python3 Assignment3.py -hyb 0.0 1.0 file1.pol
+Error with root
+
+
+End program.....
+
+
+file2
+-------------
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py  0.0 2.0 file2.pola : 0.000000000000000000, b : 2.000000000000000000, fa : -20.000000000000000000, fb : -20.000000000000000000
+Inadequate values for a and b.
+
+End program.....
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -sec 0.0 2.0 file2.pol
+0, a: 0.0000000000000000000000000000, fa: -20.0000000000000000000000000000
+1, b: 2.0000000000000000000000000000, fb: -20.0000000000000000000000000000
+Traceback (most recent call last):
+  File "Assignment3.py", line 286, in <module>
+    output_tofile(str(Secant(polyList,floats[0],floats[1], maxIt)))
+  File "Assignment3.py", line 245, in Secant
+    d = (b - a) / (fb - fa)
+ZeroDivisionError: float division by zero
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -hyb 0.0 2.0 file2.pol
+Error with root
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -newt 2.0 file2.polWrong arguments passed. End program.
+0, x: 2.000000000000000000, fx: 16.000000000000000000
+n: 0, x: 1.891891891891891886, fx: 424.149013878743573969
+n: 1, x: 1.580173638826422478, fx: 2114.987762986454526981
+n: 2, x: 0.550705595121476765, fx: 2054.447222445914121636
+Small slope!
+End program.....
+
+
+file3
+--------------
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py 0.0 1.0 file3.pol
+a : 0.000000000000000000, b : 1.000000000000000000, fa : -7.000000000000000000, fb : -7.000000000000000000
+Inadequate values for a and b.
+
+End program.....
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -sec 0.0 1.0 file3.pol
+0, a: 0.0000000000000000000000000000, fa: -7.0000000000000000000000000000
+1, b: 1.0000000000000000000000000000, fb: -7.0000000000000000000000000000
+Traceback (most recent call last):
+  File "Assignment3.py", line 286, in <module>
+    output_tofile(str(Secant(polyList,floats[0],floats[1], maxIt)))
+  File "Assignment3.py", line 245, in Secant
+    d = (b - a) / (fb - fa)
+ZeroDivisionError: float division by zero
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -newt 0.0 1.0 file3.pol
+0, x: 0.000000000000000000, fx: -7.000000000000000000
+Traceback (most recent call last):
+  File "Assignment3.py", line 290, in <module>
+    output_tofile(str(Newton(polyList,floats[0], maxIt)))
+  File "Assignment3.py", line 157, in Newton
+    fp = polyConvert(derivative(_list_fp), x)
+  File "Assignment3.py", line 94, in polyConvert
+    polynomial[x] *= x_value**(size) 
+ZeroDivisionError: 0.0 cannot be raised to a negative power
+
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -hyb 0.0 1.0 file3.pol
+Error with root
+jfernandez@MintBox .../Assignment3 $ python3 Assignment3.py -newt 1.0 file3.polWrong arguments passed. End program.
+0, x: 1.000000000000000000, fx: 1.000000000000000000
+n: 0, x: 0.947368421052631637, fx: 17.551246537396124836
+n: 1, x: 0.239043913533038221, fx: 13.132216630273251923
+n: 2, x: -3.350432719062068188, fx: 3.658532419746934217
+Small slope!
+End program.....
+
+
