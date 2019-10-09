@@ -27,19 +27,14 @@ for x in range(len(sys.argv) - 1):
 	elif (str(sys.argv[x]) == "--maxIt"):
 		try:
 			maxIt = int(sys.argv[x + 1]) + 0
-			# print("Max power achieved %r" % (maxIt))
 		except ValueError:
 			print("Wrong arguments passed. End program.")
 			break
 
-# TASK If Bisection or Secant are picked floats must be length of 2
-#If Newton method is provided two floats output message telling
-#user that input 2 will be discarded for Newton	
 floats = []
 for x in range(len(sys.argv)-2, len(sys.argv)-4, -1):
 	try:
 		if isinstance(float(str(sys.argv[x])), float):
-			# print("index : %d, arg: %5.2f" % (x, float(str(sys.argv[x]))))
 			floats.insert(0, float(str(sys.argv[x])))
 	except ValueError:
 		print("Wrong arguments passed. End program.")
@@ -47,8 +42,8 @@ for x in range(len(sys.argv)-2, len(sys.argv)-4, -1):
 
 
 # open file and extract data
-	#make sure to pack data in lists with n in list[0] 
-	#and b in list[n-1] for derivative function
+# data in lists with n in list[0] 
+# and b in list[n-1] for derivative function
 
 #extract file info and parse with regex
 helloFile = open(data_file)
@@ -61,23 +56,35 @@ polyList = []
 for x in range(len(string_array)):
 	polyList.append(int(string_array[x]))
 
-pdb.set_trace()
 
-# TASK convert file data list into function
-#	via polyConvert function
+def get_method():
+	methods = ["Bisection", "Newton", "Secant"]
+	for x in range(len(methods)):
+		if (boolean_check[x]):
+			return methods[x]
+	return "Bisection"
+
+#convert file data list into a 'function'
+# via the generic polyConvert function
 def polyConvert(polynomial, x_value):
 	size = polynomial[0]
 	sum = 0
-	# LEFT OFF HERE
-	# NEED TO WRITE A METHOD THAT CALCULATES A 
-	# VALUE OF THE POLYNOMIAL AND RETURNS A 
-	# VALUE IE A FUNCTION
-	# for x in range(1, len(polynomial)):
-	# 	sum +=  
+	# Calculates and returns the value of the polynomial
+	# function based on the supplied x-value
+	for x in range(1, len(polynomial)-1):
+		polynomial[x] *= x_value**(size) 
+		sum += polynomial[x]
+		size -= 1
 	return sum
 
-
-# TASK choose operations based on options
+#calculate polynomial derivates for newton based on file values
+def derivative(_list):
+	old_index = _list[0]
+	_list[0] -= 1
+	for x in range(1, len(_list)):
+		_list[x] *= old_index
+		old_index -= 1
+	return _list
 
 #Algorithms
 def Bisection(_function,a,b, nmax):
@@ -104,7 +111,7 @@ def Bisection(_function,a,b, nmax):
 		else:
 			a = c
 			fa = fc
-	print ("Max iterations reached without convergence in Bisection method...\n")
+	print("Max iterations reached without convergence in Bisection method...\n")
 	return c
 #end Bisection
 
@@ -127,17 +134,6 @@ def Newton(_func, deriv_func, x, nmax):
 			print("Newton algorithm has converged after %d iterations!" % (n))
 			return x
 #end Newton
-
-#calculate polynomial derivates for newton based on file values
-def derivative(_list):
-	old_index = _list[0]
-	_list[0] -= 1
-	for x in range(1, len(_list)):
-		_list[x] *= old_index
-		old_index -= 1
-	return _list
-
-
 
 # TASK write hybrid Bisection-Newton method
 
@@ -175,18 +171,35 @@ def Secant(_func, a, b, nmax):
 	return a
 #end Secant
 
+#Choose operations based on options
+# If Bisection or Secant are picked floats must be length of 2
+if get_method() == "Bisection" and len(floats) == 2:
+	# print("Method: %r, Floats :" % (get_method()), end =" ")
+	output_tofile(Bisection(polyConvert,floats[0],floats[1], maxIt))
+elif get_method() == "Secant" and len(floats) == 2:
+	output_tofile(Secant(polyConvert,floats[0],floats[1], maxIt))
+elif get_method() == "Newton" and (len(floats) == 2 or len(floats) == 1):
+	# print("Method: %r, Floats : %5.2f" % (get_method(), floats[0]))
+	Newton(_func, deriv_func, x, nmax)
+	output_tofile(Newton(polyConvert,floats[0],floats[1], maxIt))
+else:
+	print("User error - goodbye...")
+	break
+
 #write solutions/output to file
-# outputSol = data_file
-# extract = re.search('(.+?).pol', outputSol)
-# if extract:
-#     outputSol = str(extract.group(1)) + ".sol"
-# solution = " I am the test solution!"
-# outputFile = open(outputSol, 'w')
-# outputFile.write(solution)
-# outputFile.close()
-# helloFile .close()
+def output_tofile(solution):
+	outputSol = data_file
+	extract = re.search('(.+?).pol', outputSol)
+	if extract:
+	    outputSol = str(extract.group(1)) + ".sol"
+	# solution = " I am the test solution!"
+	outputFile = open(outputSol, 'w')
+	outputFile.write(solution)
+	outputFile.close()
+	helloFile .close()
 
-
+# testVar = polyConvert(derivative(derivative(polyList)), 3)
+# pdb.set_trace()
 # Test code 
 #--------------------------------
 
@@ -201,6 +214,8 @@ def print_method():
 	for x in range(len(methods)):
 		if (boolean_check[x]):
 			print(methods[x])
+
+
 
 #test functions
 # def test(arg):
